@@ -1,0 +1,29 @@
+on: [push]
+
+name: AzureStack AAD PowerShellSample
+
+jobs:
+  ci_job:
+    runs-on: rakku-wdl18
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          npm install
+          npm run build
+      - name: Use local azure login action
+        uses: ./
+        with:
+          creds: ${{ secrets.AZURESTACK_LH01_AAD_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: az login azurestack
+        run: |
+          hostname
+          az account show --output table
+          az group list --output table
+      - name: Az PowerShell Test
+        run: |
+          hostname
+          Get-AzContext
+          Get-AzResourceGroup

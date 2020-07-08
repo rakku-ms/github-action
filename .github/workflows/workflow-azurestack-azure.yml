@@ -1,0 +1,24 @@
+on: [push]
+
+name: AzureStack Azure PowerShellSample
+
+jobs:
+  ci_job:
+    runs-on: rakku-wdl18
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          npm install
+          npm run build
+      - name: Use local azure login action
+        uses: ./
+        with:
+          creds: ${{ secrets.AZURESTACK_AZURE_CREDENTIALS }}
+      - name: az login azurestack
+        run: |
+          hostname
+          az account show --output table
+          az webapp list --output table
+          az group list --output table
