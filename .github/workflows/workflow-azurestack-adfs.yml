@@ -4,7 +4,7 @@ name: AzureStack ADFS PowerShellSample
 
 jobs:
   ci_job:
-    runs-on: rakku-wdl18
+    runs-on: rakku-wd
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -16,9 +16,18 @@ jobs:
         uses: ./
         with:
           creds: ${{ secrets.AZURESTACK_REDMOND_ADFS_CREDENTIALS }}
+          enable-AzPSSession: true
       - name: az login azurestack
         run: |
           hostname
           az account show --output table
           az webapp list --output table
           az group list --output table
+      - name: Az PowerShell Test
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: '3.1.0'
+          inlineScript: |
+            hostname
+            Get-AzContext
+            Get-AzResourceGroup

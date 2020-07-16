@@ -4,7 +4,7 @@ name: AzureStack AAD PowerShellSample
 
 jobs:
   ci_job:
-    runs-on: rakku-wdl18
+    runs-on: rakku-wd
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
@@ -22,8 +22,14 @@ jobs:
           hostname
           az account show --output table
           az group list --output table
+          az webapp list --output table
+          az resource list --output table
       - name: Az PowerShell Test
-        run: |
-          hostname
-          Get-AzContext
-          Get-AzResourceGroup
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: '3.1.0'
+          inlineScript: |
+            hostname
+            Get-AzContext
+            Get-AzResourceGroup
+            Get-AzResource 
