@@ -63,7 +63,7 @@ async function main() {
         if (enableAzPSSession) {
             // Attempting Az PS login
             console.log(`Running Azure PS Login`);
-            const spnlogin: ServicePrincipalLogin = new ServicePrincipalLogin(servicePrincipalId, servicePrincipalKey, tenantId, subscriptionId);
+            const spnlogin: ServicePrincipalLogin = new ServicePrincipalLogin(servicePrincipalId, servicePrincipalKey, tenantId, subscriptionId, customEnvironmentName, resourceManagerEndpointUrl, profileVersion);
             await spnlogin.initialize();
             await spnlogin.login();
         }
