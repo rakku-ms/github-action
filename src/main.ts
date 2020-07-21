@@ -37,11 +37,9 @@ async function main() {
         if (!servicePrincipalId || !servicePrincipalKey || !tenantId || !subscriptionId) {
             throw new Error("Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.");
         }
+
         // Attempting Az cli login
-        if (resourceManagerEndpointUrl !== "") {
-            if (customEnvironmentName === "") {
-                customEnvironmentName = "Custom"
-            }
+        if (customEnvironmentName != "") {
             console.log(`Registering custom cloud: "${customEnvironmentName}" with ARM endpoint: "${resourceManagerEndpointUrl}"`);
             try {
                 await executeAzCliCommand(`cloud register -n "${customEnvironmentName}" --endpoint-resource-manager "${resourceManagerEndpointUrl}" `, false);
@@ -52,14 +50,14 @@ async function main() {
             await executeAzCliCommand(`cloud set -n "${customEnvironmentName}"`,false);
             console.log(`Done registering custom cloud: "${customEnvironmentName}"`);
         }
-        if (profileVersion !== "") {
+        if (profileVersion != "") {
             console.log(`updating profile version to "${profileVersion}"`);
             await executeAzCliCommand(`cloud update --profile "${profileVersion}"`,false);
         }
-
         await executeAzCliCommand(`login --service-principal -u "${servicePrincipalId}" -p "${servicePrincipalKey}" --tenant "${tenantId}"`, true);
         await executeAzCliCommand(`account set --subscription "${subscriptionId}"`, true);
         isAzCLISuccess = true;
+
         if (enableAzPSSession) {
             // Attempting Az PS login
             console.log(`Running Azure PS Login`);
