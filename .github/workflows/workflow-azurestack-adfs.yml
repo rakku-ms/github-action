@@ -1,0 +1,33 @@
+on: [push]
+
+name: AzureStack ADFS PowerShellSample
+
+jobs:
+  ci_job:
+    runs-on: rakku-wd
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          npm install
+          npm run build
+      - name: Use Local Azure Login Action
+        uses: ./
+        with:
+          creds: ${{ secrets.AZURESTACK_REDMOND_ADFS_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: Run Azure CLI Script Against AzureStack
+        run: |
+          hostname
+          az account show --output table
+          az webapp list --output table
+          az group list --output table
+      - name: Run Az PowerShell  Script Against AzureStack
+        uses: azure/powershell@v1
+        with:
+          azPSVersion: '3.1.0'
+          inlineScript: |
+            hostname
+            Get-AzContext
+            Get-AzResourceGroup
