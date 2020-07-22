@@ -33,4 +33,3 @@ jobs:
           hostname
           Get-AzContext
           Get-AzResourceGroup
-          Get-AzResource
