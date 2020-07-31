@@ -16,6 +16,8 @@ jobs:
         uses: ./
         with:
           creds: ${{ secrets.AZURESTACK_LH01_AAD_CREDENTIALS }}
+          profileVersion: 2019-03-01-hybrid
+          customEnvironmentName: AzureStackLH001
           enable-AzPSSession: true
       - name: Run Azure CLI Script Against AzureStack
         run: |

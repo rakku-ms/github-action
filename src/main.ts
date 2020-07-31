@@ -31,8 +31,8 @@ async function main() {
         let tenantId = secrets.getSecret("$.tenantId", false);
         let subscriptionId = secrets.getSecret("$.subscriptionId", false);
         let resourceManagerEndpointUrl = secrets.getSecret("$.resourceManagerEndpointUrl", false);
-        let profileVersion = secrets.getSecret("$.profileVersion", false);
-        let customEnvironmentName = secrets.getSecret("$.customEnvironmentName", false);
+        let profileVersion = core.getInput("profileVersion");
+        let customEnvironmentName = core.getInput("customEnvironmentName");
         const enableAzPSSession = core.getInput('enable-AzPSSession').toLowerCase() === "true";
         if (!servicePrincipalId || !servicePrincipalKey || !tenantId || !subscriptionId) {
             throw new Error("Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.");
