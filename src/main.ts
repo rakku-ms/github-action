@@ -56,15 +56,13 @@ async function main() {
                 }
                 let suffixKeyvault = ".vault" + baseUri.substring(baseUri.indexOf('.'));
                 let suffixStorage = baseUri.substring(baseUri.indexOf('.')+1);
-                await executeAzCliCommand(`cloud register -n "${environment}" --endpoint-resource-manager "${resourceManagerEndpointUrl}" --suffix-keyvault-dns "${suffixKeyvault}" --suffix-storage-endpoint "${suffixStorage}" `, false);
+                let profileVersion = "2019-03-01-hybrid";
+                await executeAzCliCommand(`cloud register -n "${environment}" --endpoint-resource-manager "${resourceManagerEndpointUrl}" --suffix-keyvault-dns "${suffixKeyvault}" --suffix-storage-endpoint "${suffixStorage}" --profile "${profileVersion}"`, false);
             } catch (error) {
                 core.error(`Error while trying to register cloud "${environment}": "${error}"`);
             }
             await executeAzCliCommand(`cloud set -n "${environment}"`, false);
             console.log(`Done registering cloud: "${environment}"`);
-            let profileVersion = "2019-03-01-hybrid";
-            console.log(`updating profile version to "${profileVersion}"`);
-            await executeAzCliCommand(`cloud update --profile "${profileVersion}"`, false);
         }
         await executeAzCliCommand(`login --service-principal -u "${servicePrincipalId}" -p "${servicePrincipalKey}" --tenant "${tenantId}"`, true);
         await executeAzCliCommand(`account set --subscription "${subscriptionId}"`, true);
