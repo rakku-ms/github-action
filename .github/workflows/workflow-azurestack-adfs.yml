@@ -25,11 +25,10 @@ jobs:
           az webapp list --output table
           az group list --output table
           az resource list --output table
-          az keyvault create --location redmond --name ghakeyvault --resource-group gha-redmond-rg
+          az keyvault create --location redmond --name ghakeyvault --resource-group 'gha-redmond-rg'
           az keyvault secret set --name 'testsecret' --vault-name 'ghakeyvault' --value 'sample'
-          az storage account delete -n 'testsa002' -g 'gha-lh01-rg' --yes
-          az storage account create --location northwest --name 'testsa002' --resource-group 'gha-lh01-rg' --sku Standard_LRS
-          az storage container create -n 'testsacon001' --public-access container
+          az storage account delete -n 'testsa002' -g 'gha-redmond-rg' --yes
+          az storage account create --location redmond --name 'testsa002' --resource-group 'gha-redmond-rg' --sku Standard_LRS
       - name: Run Az PowerShell  Script Against AzureStack
         uses: azure/powershell@v1
         with:

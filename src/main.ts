@@ -50,8 +50,12 @@ async function main() {
             }
             console.log(`Registering cloud: "${environment}" with ARM endpoint: "${resourceManagerEndpointUrl}"`);
             try {
-                let suffixKeyvault = ".vault" + resourceManagerEndpointUrl.substring(resourceManagerEndpointUrl.indexOf('.')).trimEnd('/');
-                let suffixStorage = resourceManagerEndpointUrl.substring(resourceManagerEndpointUrl.indexOf('.')+1).trimEnd('/');
+                let baseUri = resourceManagerEndpointUrl;
+                if (baseUri.endsWith('/')) {
+                    baseUri = baseUri.substring(0, baseUri.length-1);
+                }
+                let suffixKeyvault = ".vault" + baseUri.substring(baseUri.indexOf('.'));
+                let suffixStorage = baseUri.substring(baseUri.indexOf('.')+1);
                 await executeAzCliCommand(`cloud register -n "${environment}" --endpoint-resource-manager "${resourceManagerEndpointUrl}" --suffix-keyvault-dns "${suffixKeyvault}" --suffix-storage-endpoint "${suffixStorage}" `, false);
             } catch (error) {
                 core.error(`Error while trying to register cloud "${environment}": "${error}"`);
