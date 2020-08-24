@@ -37,7 +37,7 @@ async function main() {
             throw new Error("Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.");
         }
         // Attempting Az cli login
-        if (environment == "AzureStack") {
+        if (environment.toLowerCase() == "azurestack") {
             if (!resourceManagerEndpointUrl) {
                 throw new Error("resourceManagerEndpointUrl is a required parameter when environment is defined.");
             }

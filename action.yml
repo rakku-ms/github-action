@@ -10,7 +10,7 @@ inputs:
     required: false
     default: false
   environment:
-    description: 'Name of the environment (Set this to AzureStack for AzureStack environment)'
+    description: 'Name of the environment. Supported values are AzureStack, AzureCloud. Default being AzureCloud'
     required: false
     default: AzureCloud
 branding:
